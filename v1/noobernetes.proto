@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package hayovanloon.noobernetes.v1;
+
+import "google/api/annotations.proto";
+
+option java_multiple_files = true;
+option java_package = "nl.hayovanloon.noobernetes";
+option java_outer_classname = "noobernetes";
+
+
+service Counter {
+
+    rpc PutTick(PutTickRequest) returns (PutTickResponse) {
+        option (google.api.http) = {
+            put: "/ticks"
+            body: "*"
+        };
+    }
+}
+
+
+message PutTickRequest {
+    string message = 1;
+}
+
+message PutTickResponse {
+    PutTickRequest request = 1;
+}
