@@ -1,5 +1,7 @@
 GO := /usr/local/go/bin/go
 PROTOC := /usr/local/bin/protoc
+DOCKER := /usr/bin/docker
+MAKE := /usr/bin/make
 
 GOOGLE_APIS := /home/hayo/Documents/googleapis
 PROTO_SELF := v1
@@ -8,7 +10,8 @@ GO_GENERATED := ../go-generated
 OUT := $(GO_GENERATED)/noobernetes/v1
 
 TEST_ROOT := test
-MOCK_TARGET := $(TEST_ROOT)/$(OUT)/noobernetes_mock.go
+MOCK_TARGET := $(TEST_ROOT)/noobernetes/v1/noobernetes_mock.go
+
 
 .PHONY: clean
 
@@ -22,6 +25,13 @@ protoc: clean
 		-I"$(GOOGLE_APIS)" \
 		-I"$(PROTO_SELF)" \
 		v1/noobernetes.proto
+
+build-counter: protoc
+	$(DOCKER) build -t noobernetes_counter counter/.
+
+build-ticker: protoc
+	$(DOCKER) build -t noobernetes_ticker ticker/.
+
 #
 #mocks:
 #	mkdir -p "$(TEST_ROOT)/$(ENVY_OUT)"

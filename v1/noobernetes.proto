@@ -17,6 +17,12 @@ service Counter {
             body: "*"
         };
     }
+
+    rpc GetTicks(GetTicksRequest) returns (GetTicksResponse) {
+        option (google.api.http) = {
+            get: "/ticks"
+        };
+    }
 }
 
 
@@ -26,4 +32,13 @@ message PutTickRequest {
 
 message PutTickResponse {
     PutTickRequest request = 1;
+}
+
+message GetTicksRequest {
+}
+
+message GetTicksResponse {
+    GetTicksRequest request = 1;
+    int64 ticks = 2;
+    int64 tocks = 3;
 }

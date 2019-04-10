@@ -12,11 +12,11 @@ import (
 )
 
 const (
-	port         = "8042"
+	port = "8080"
 )
 
 type server struct {
-	id string
+	id    string
 	ticks int
 	tocks int
 }
@@ -36,12 +36,16 @@ func (s server) String() string {
 func (s *server) PutTick(ctx context.Context, r *pb.PutTickRequest) (*pb.PutTickResponse, error) {
 	resp := &pb.PutTickResponse{Request: r}
 	s.Inc(r.Message == "tick")
-	fmt.Printf("%v\n", s)
+	return resp, nil
+}
+
+func (s server) GetTicks(ctx context.Context, r *pb.GetTicksRequest) (*pb.GetTicksResponse, error) {
+	resp := &pb.GetTicksResponse{Request: r, Ticks: int64(s.ticks), Tocks: int64(s.tocks)}
 	return resp, nil
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":" + port)
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
